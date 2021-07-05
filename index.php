@@ -1,4 +1,13 @@
-<?php session_start() ?><!DOCTYPE html>
+<?php 
+    // include "helper/userHelper.php";
+    // use LoginHelper\UserHelperClass;
+    session_start();
+
+    // $menuInstance = new UserHelperClass();
+    // $menu = $menuInstance->getMenuByWeekAndYear();
+
+?>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -265,7 +274,16 @@
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-                        <?php var_dump($_SESSION) ?>
+                        <?php 
+                            // include "helper/userHelper.php";
+                            // use LoginHelper\UserHelperClass;
+
+                            // $menuInstance = new UserHelperClass();
+                            // $menu = $menuInstance->getMenuByWeekAndYear();
+
+                        ?>
+                        <?php // var_dump($_SESSION['order']) ?>
+                        <?php // var_dump($_SESSION) ?>
 
                     </div>
 
@@ -617,7 +635,9 @@
                     </form>
                     <?php
                     include "api/apiHandler.php";
+
                     use ApiHandler\ApiHandlerClass;
+
                     if(isset($_GET)){
                         if(isset($_GET['Logout']) && $_GET['Logout'] === 'Logout'){
                             $api = new ApiHandlerClass();

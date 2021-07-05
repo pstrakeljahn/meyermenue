@@ -14,6 +14,10 @@ class ApiHandlerClass
         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
     ];
 
+    /**
+     * @deprecated For the future. Currently every request is hardcoded!
+     */
+
     public static function get(string $uri){
 
         $arrHeaderModify = [
@@ -30,6 +34,7 @@ class ApiHandlerClass
 
     /**
      * The payload array should contain the parameters to be passed in the form key => value
+     * @deprecated For the future. Currently every request is hardcoded!
      */
 
     public static function post(string $uri = null, Array $payload, string $token = null) : string
@@ -155,5 +160,30 @@ class ApiHandlerClass
             return true;
         }
         return false;
+    }
+
+    public static function getFood(int $year, int $week, string $token): string
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => 'https://shop.meyer-menue.de/api/v1/menue/' . $_SESSION['UserData']['customerId'] . '/year/' . $year . '/week/' . $week,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'GET',
+        CURLOPT_HTTPHEADER => array(
+            'access-token: ' . $token,
+            'Cookie: PHPSESSID=gkl6cqc7a4rj0gerk1nunalp70'
+        ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        return $response;
     }
 }
