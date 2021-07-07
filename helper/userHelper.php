@@ -47,7 +47,6 @@ class UserHelperClass
                 }
             }
         }
-
     }
 
     public static function getWeeksOfMonth()
@@ -75,6 +74,14 @@ class UserHelperClass
         }
 
         return $weekArr;
+    }
+
+    public static function getInvoices(){
+        $api = new ApiHandlerClass();
+
+        unset($_SESSION['invoices']);
+        $_SESSION['invoices'] = json_decode($api->getInvoices($_SESSION['token']), true);
+
     }
 
     public static function sessionHelper(){

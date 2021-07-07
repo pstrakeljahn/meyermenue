@@ -3,8 +3,8 @@
     use LoginHelper\UserHelperClass;
     session_start();
 
-    $menuInstance = new UserHelperClass();
-    $menu = $menuInstance->getMenuByWeekAndYear();
+    $invoicesInstance = new UserHelperClass();
+    $invoicesInstance->getInvoices();
 
 ?>
 <!DOCTYPE html>
@@ -37,7 +37,7 @@
                 <div class="sidebar-brand-text mx-3"><img src="img/logo.png" width="150"></img></div>
             </a>
             <hr class="sidebar-divider my-0">
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="index.php">
                 <i class="fas fa-info-circle"></i>
                     <span>Overview</span></a>
@@ -50,7 +50,7 @@
                     <span>Bestellen</span>
                 </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link" href="invoice.php">
                 <i class="fas fa-file-invoice-dollar"></i>
                     <span>Rechnungen</span>
@@ -111,60 +111,33 @@
                             <div class="card shadow mb-4">
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Bestellungen diese Woche (KW <?php echo date('W'); ?>)</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Rechnungen</h6>
                                 </div>
                                 <div class="card-body">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                        <th scope="col">Datum</th>
+                                        <th scope="col">Rechnungsnummer</th>
+                                        <th scope="col">Betrag</th>
+                                        <th scope="col"><center>Download</center></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
                                         <?php
-                                            include "helper/foodHelper.php";
-                                            use FoodHelper\FoodHelperClass;
-                                        
-                                            $foodInstance = new FoodHelperClass();
-                                            $food = $foodInstance->getFoodByWeek(date('W'));
 
-                                            $i = 0;
-                                            if(!count($food)){
-                                                echo '<center><b>Keine Bestellung für diese Woche!</b></center>';
-                                            }
-                                            foreach($food as $foo){
-                                                $i++;
-                                                echo '<table> <tbody> <tr> <td style="padding-right: 20px;" ><img src="https://shop.meyer-menue.de/assets/image/' . $foo['menuimage'] . '" width="275"></img></td> <td><h4>' . $foo['date'] . ' - Menü ' . $foo['menuID'] . '</h4><br><b>' . $foo['title'] . '</b><br><div style="margin-left: 20px;">' . $foo['description'] . '</div></td> <td></td> </tr> </tbody> </table>';
-                                                if($i < count($food)){
-                                                    echo '<div style="padding-bottom: 20px; padding-top: 20px;"></div>';
-                                                }
-                                            }
+                                        foreach($_SESSION['invoices'] as $invoice){
+                                            $date = DateTime::createFromFormat('Y-m-d', $invoice['date'])->format('d.m.Y');
+                                            $link = 'https://shop.meyer-menue.de/assets/pdf/invoice/voucher/' . $invoice['id'] . '?accessToken=' . $_SESSION['token'];
+
+                                            echo '<tr><th scope="row">' . $date . '</th><td>' . $invoice['invoiceNr'] . '</td><td>' . number_format((float)$invoice['price'], 2, '.', '') . '€</td><td><center><a href="' . $link . '"><i class="fas fa-file-pdf""></i></a></center></td></tr>';
+                                        }
+
+
                                         ?>
 
-                                </div>
-                            </div>
-                        </div>
-                </div>
-            </div>
-            <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-xl-12 col-lg-7">
-                            <div class="card shadow mb-4">
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Bestellungen nächste Woche (KW <?php echo date('W')+1; ?>)</h6>
-                                </div>
-                                <div class="card-body">
-                                        <?php
-                                            $foodInstance = new FoodHelperClass();
-                                            $food = $foodInstance->getFoodByWeek(date('W')+1);
-
-                                            $i = 0;
-                                            if(!count($food)){
-                                                echo '<center><b>Keine Bestellung für nächste Woche!</b></center>';
-                                            }
-                                            foreach($food as $foo){
-                                                $i++;
-                                                echo '<table> <tbody> <tr> <td style="padding-right: 20px;" ><img src="https://shop.meyer-menue.de/assets/image/' . $foo['menuimage'] . '" width="275"></img></td> <td><h4>' . $foo['date'] . ' - Menü ' . $foo['menuID'] . '</h4><br><b>' . $foo['title'] . '</b><br><div style="margin-left: 20px;">' . $foo['description'] . '</div></td> <td></td> </tr> </tbody> </table>';
-                                                if($i < count($food)){
-                                                    echo '<div style="padding-bottom: 20px; padding-top: 20px;"></div>';
-                                                }
-                                            }
-                                        ?>
-
+                                    </tbody>
+                                </table>
                                 </div>
                             </div>
                         </div>
