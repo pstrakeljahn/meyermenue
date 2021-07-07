@@ -121,6 +121,40 @@
                                             $food = $foodInstance->getFoodByWeek(date('W'));
 
                                             $i = 0;
+                                            if(!count($food)){
+                                                echo '<center><b>Keine Bestellung für diese Woche!</b></center>';
+                                            }
+                                            foreach($food as $foo){
+                                                $i++;
+                                                echo '<table> <tbody> <tr> <td style="padding-right: 20px;" ><img src="https://shop.meyer-menue.de/assets/image/' . $foo['menuimage'] . '" width="275"></img></td> <td><h4>' . $foo['date'] . ' - Menü ' . $foo['menuID'] . '</h4><br><b>' . $foo['title'] . '</b><br><div style="margin-left: 20px;">' . $foo['description'] . '</div></td> <td></td> </tr> </tbody> </table>';
+                                                if($i < count($food)){
+                                                    echo '<div style="padding-bottom: 20px; padding-top: 20px;"></div>';
+                                                }
+                                            }
+                                        ?>
+
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+            <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-7">
+                            <div class="card shadow mb-4">
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Bestellungen nächste Woche (KW <?php echo date('W')+1; ?>)</h6>
+                                </div>
+                                <div class="card-body">
+                                        <?php
+                                            $foodInstance = new FoodHelperClass();
+                                            $food = $foodInstance->getFoodByWeek(date('W')+1);
+
+                                            $i = 0;
+                                            if(!count($food)){
+                                                echo '<center><b>Keine Bestellung für nächste Woche!</b></center>';
+                                            }
                                             foreach($food as $foo){
                                                 $i++;
                                                 echo '<table> <tbody> <tr> <td style="padding-right: 20px;" ><img src="https://shop.meyer-menue.de/assets/image/' . $foo['menuimage'] . '" width="275"></img></td> <td><h4>' . $foo['date'] . ' - Menü ' . $foo['menuID'] . '</h4><br><b>' . $foo['title'] . '</b><br><div style="margin-left: 20px;">' . $foo['description'] . '</div></td> <td></td> </tr> </tbody> </table>';

@@ -68,10 +68,12 @@ class UserHelperClass
         $weekArr = array();
     
         $j = 1;
-        for ($i = $firstWeek; $i <= $lastWeek; $i++) {
+        // Plus next 2 weeks, for safty
+        for ($i = $firstWeek; $i <= $lastWeek+2; $i++) {
             $weekArr[$i] = 'week ' . $j;
             $j++;
         }
+
         return $weekArr;
     }
 

@@ -7,7 +7,7 @@ use DateTime;
 class FoodHelperClass
 {
     public static function getFoodByWeek($week){
-        if($_SESSION['order'][$week]){
+        if(isset($_SESSION['order'][$week])){
             $arrFoodWeek = [];
             foreach($_SESSION['order'][$week] as $week => $item){
                 $data = [];
@@ -25,7 +25,7 @@ class FoodHelperClass
             return $arrFoodWeek;
         }
 
-        return false;
+        return [];
     }
 
     public static function translate($i){
