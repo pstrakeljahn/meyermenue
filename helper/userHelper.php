@@ -22,12 +22,8 @@ class UserHelperClass
                 return false;
             }
 
-
             $_SESSION['UserData'] = $response;
-
             return true;
-
-
         }
         return false;
     }
@@ -58,10 +54,7 @@ class UserHelperClass
     {
         $currentYear = date('Y');
         $currentMonth = date('m');
-    
-        //Substitue year and month
         $time = strtotime("$currentYear-$currentMonth-01");  
-        //Got the first week number
         $firstWeek = date("W", $time);
     
         if ($currentMonth == 12)
