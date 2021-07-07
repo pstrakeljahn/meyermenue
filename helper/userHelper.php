@@ -33,7 +33,7 @@ class UserHelperClass
 
         $weeks = self::getWeeksOfMonth();
         foreach($weeks as $week => $irrelevant){
-            if(!$_SESSION['menu'][$week]){
+            if(!isset($_SESSION['menu'][$week])){
                 $_SESSION['menu'][$week] = $api->getfood(date('Y'), $week, $_SESSION['token']);
             }
         }
