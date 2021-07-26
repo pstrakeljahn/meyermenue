@@ -140,7 +140,7 @@
                                         </button>
                                         <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton">
                                             <?php
-                                                for($i=0; $i<3; $i++){
+                                                for($i=0; $i<5; $i++){
                                                     $kw = (int)date('W')+$i;
                                                     $year = (int)date('Y');
                                                     echo '<a class="dropdown-item" href="order.php?kw='.$kw.'&year='.$year.'">KW '.$kw.'</a>';
@@ -207,7 +207,7 @@
                                             
                                         }
                                         ?>
-
+                                    <input style="float:right" class="btn btn-primary" type="submit" value="Bestellung absenden">
                                     
                                 </div>
                             </div>
