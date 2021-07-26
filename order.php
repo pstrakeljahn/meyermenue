@@ -179,9 +179,9 @@
                                             foreach($cache as $day => $food){
                                                 $dto = new DateTime();
                                                 $test = $dto->format('l');
-                                                if($_GET['kw'] === $dto->format('W') && $day === $misc->translate($dto->format('l'))){
-                                                    continue;
-                                                }
+                                                // if($_GET['kw'] === $dto->format('W') && $day === $misc->translate($dto->format('l'))){
+                                                //     continue;
+                                                // }
                                                 $i=0;
                                                 echo '
                                                 <div class="card shadow mb-4">
@@ -205,9 +205,9 @@
                                             }
 
                                             
+                                            echo '<input style="float:right" class="btn btn-primary" type="submit" value="Bestellung absenden">';
                                         }
                                         ?>
-                                    <input style="float:right" class="btn btn-primary" type="submit" value="Bestellung absenden">
                                     
                                 </div>
                             </div>
