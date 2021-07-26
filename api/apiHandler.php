@@ -162,7 +162,7 @@ class ApiHandlerClass
         return false;
     }
 
-    public static function getFood(int $year, int $week, string $token): string
+    public static function getFood(int $year, int $week, string $token = null): string
     {
         $curl = curl_init();
 
@@ -176,7 +176,7 @@ class ApiHandlerClass
         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
         CURLOPT_CUSTOMREQUEST => 'GET',
         CURLOPT_HTTPHEADER => array(
-            'access-token: ' . $token,
+            isset($token) ? 'access-token: ' . $token: '',
             'Cookie: PHPSESSID=gkl6cqc7a4rj0gerk1nunalp70'
         ),
         ));

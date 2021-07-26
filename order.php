@@ -1,10 +1,13 @@
 <?php 
     include "helper/userHelper.php";
-    use LoginHelper\UserHelperClass;
-    session_start();
+    include "helper/miscHelper.php";
+    include "helper/foodHelper.php";
 
-    $invoicesInstance = new UserHelperClass();
-    $invoicesInstance->getInvoices();
+    use ApiHandler\ApiHandlerClass;
+    use MiscHelper\MiscHelperClass;
+    use FoodHelper\FoodHelperClass;
+    $misc = new MiscHelperClass();
+    session_start();
 
 ?>
 <!DOCTYPE html>
@@ -108,13 +111,104 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-xl-12 col-lg-7">
+                        <div class="card mb-4 border-bottom-danger">
+                                <div class="card-body">
+                                    <?php
+                                        echo 'Die folgenden Tage sind Bestelltage:<br>';
+                                        foreach($misc::ALLOWED_DAYS as $day){
+                                            $arrDays[] = $misc->translate($day);
+                                            if(isset($_GET['kw']) && isset($_GET['year'])){
+                                                $arrDate[] = $misc->getStartAndEndDate($_GET['kw'], $_GET['year'], true, $day);
+                                            }
+                                        }
+                                        echo '<div style="margin-left: 30px;"><b>'.implode(", ", $arrDays).'</b></div>';
+
+                                    ?>
+                                </div>
+                            </div>
                             <div class="card shadow mb-4">
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">TBD</h6>
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <div>
+                                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <?php
+                                                if(isset($_GET['kw'])){
+                                                    echo 'KW '.$_GET['kw'];
+                                                } else {
+                                                    echo 'Woche auswählen';
+                                                }
+                                            ?>
+                                        </button>
+                                        <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton">
+                                            <?php
+                                                for($i=0; $i<3; $i++){
+                                                    $kw = (int)date('W')+$i;
+                                                    $year = (int)date('Y');
+                                                    echo '<a class="dropdown-item" href="order.php?kw='.$kw.'&year='.$year.'">KW '.$kw.'</a>';
+                                                }
+                                            ?>
+                                        </div>
+                                    </div>
+                                        <?php
+                                        if(isset($_GET['kw']) && isset($_GET['year'])){
+                                            
+                                            $date = $misc->getStartAndEndDate($_GET['kw'], $_GET['year']);
+                                            echo $date['start'].' - '.$date['end'];
+                                        }
+                                        ?>
                                 </div>
                                 <div class="card-body">
-                               <center><b>GIBT ES NOCH NICHT!</b></center>
+                               <?php
+                                        if(!isset($_GET['kw']) && !isset($_GET['year'])){
+                                            echo '<p style="text-align: center;">Wählen Sie eine Woche aus!</p>';
+                                        } else {
+                                            $menus = json_decode(ApiHandlerClass::getFood($_GET['year'], $_GET['kw']), true);
+                                            foreach($menus as $menu){
+                                                $test = $menu['date'];
+                                                if(in_array($menu['date'], $arrDate)){
+                                                    $arrMenu[] = $menu;
+                                                }
+                                            }
+                                            $foodInstance = new FoodHelperClass();
+                                            $food = $foodInstance->getFoodByWeek($_GET['kw'], $arrMenu);
+                                            
+                                            $cache = [];
+                                            foreach($food as $foo){
+                                                $cache[$foo['date']][] = $foo;
+                                            }
+
+                                            foreach($cache as $day => $food){
+                                                $dto = new DateTime();
+                                                $test = $dto->format('l');
+                                                if($_GET['kw'] === $dto->format('W') && $day === $misc->translate($dto->format('l'))){
+                                                    continue;
+                                                }
+                                                $i=0;
+                                                echo '
+                                                <div class="card shadow mb-4">
+                                                    <a href="#collapseCardExample'.$day.'" class="d-block card-header py-3" data-toggle="collapse"
+                                                        role="button" aria-expanded="true" aria-controls="collapseCardExample'.$day.'">
+                                                        <h6 class="m-0 font-weight-bold text-primary">'.$day.'</h6>
+                                                    </a>
+                                                    <div class="collapse show" id="collapseCardExample'.$day.'">
+                                                        <div class="card-body">';
+                                                        foreach($food as $foo){
+                                                            $i++;
+                                                            echo '<table> <tbody> <tr> <td style="padding-right: 20px;" ><img src="https://shop.meyer-menue.de/assets/image/' . $foo['menuimage'] . '" width="275"></img></td> <td><h4>Menü ' . $foo['menuID'] . '</h4><br><b>' . $foo['title'] . '</b><br><div style="margin-left: 20px;">' . $foo['description'] . '</div></td> <td></td> </tr> </tbody> </table>';
+                                                            if($i < count($food)){
+                                                                echo '<div style="padding-bottom: 20px; padding-top: 20px;"></div>';
+                                                            }
+                                                        }
+                                                        echo '</div>
+                                                    </div>
+                                                </div>
+                                                ';
+                                            }
+
+                                            
+                                        }
+                                        ?>
+
+                                    
                                 </div>
                             </div>
                         </div>

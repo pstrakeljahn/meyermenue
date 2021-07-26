@@ -6,10 +6,10 @@ use DateTime;
 
 class FoodHelperClass
 {
-    public static function getFoodByWeek($week){
-        if(isset($_SESSION['order'][$week])){
+    public static function getFoodByWeek($week, $arrMenu = null){
+        if(!isset($arrMenu) ? isset($_SESSION['order'][$week]) : true){
             $arrFoodWeek = [];
-            foreach($_SESSION['order'][$week] as $week => $item){
+            foreach(!isset($arrMenu) ? $_SESSION['order'][$week] : $arrMenu as $week => $item){
                 $data = [];
                 $datetime = DateTime::createFromFormat('Y-m-d', $item['date']);
                 $date = $datetime->format('l');
