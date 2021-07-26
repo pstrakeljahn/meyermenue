@@ -189,7 +189,7 @@
                                                         role="button" aria-expanded="true" aria-controls="collapseCardExample'.$day.'">
                                                         <h6 class="m-0 font-weight-bold text-primary">'.$day.'</h6>
                                                     </a>
-                                                    <div class="collapse show" id="collapseCardExample'.$day.'">
+                                                    <div class="collapse" id="collapseCardExample'.$day.'">
                                                         <div class="card-body">';
                                                         foreach($food as $foo){
                                                             $i++;
