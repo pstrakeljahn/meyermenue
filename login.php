@@ -54,7 +54,7 @@
                                                 name="pin" placeholder="Pin eingeben...">
                                         </div>
                                         
-                                        <input type="submit" name="Login" class="btn btn-primary btn-user btn-block" value="Submit" onclick="window.onbeforeunload = null;">
+                                        <input type="submit" name="Login" class="btn btn-primary btn-user btn-block" value="Anmelden" onclick="window.onbeforeunload = null;">
                                     </form>
                                     <?php
 

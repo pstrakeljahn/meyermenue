@@ -9,6 +9,10 @@
     $misc = new MiscHelperClass();
     session_start();
 
+    if(count($_POST) > 0){
+        $t=1;
+    }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -193,7 +197,8 @@
                                                         <div class="card-body">';
                                                         foreach($food as $foo){
                                                             $i++;
-                                                            echo '<table> <tbody> <tr> <td style="padding-right: 20px;" ><img src="https://shop.meyer-menue.de/assets/image/' . $foo['menuimage'] . '" width="275"></img></td> <td><h4>Menü ' . $foo['menuID'] . '</h4><br><b>' . $foo['title'] . '</b><br><div style="margin-left: 20px;">' . $foo['description'] . '</div></td> <td></td> </tr> </tbody> </table>';
+                                                            echo '<form action="order.php" method="post">';
+                                                            echo '<table> <tbody> <tr> <td> <div class="form-check"><input class="form-check-input" type="checkbox" value="" name="'.$foo['date'].'-'.$foo['menuimage'].'"></div> </td> <td style="padding-right: 20px;" ><img src="https://shop.meyer-menue.de/assets/image/' . $foo['menuimage'] . '" width="275"></img></td> <td><h4>Menü ' . $foo['menuID'] . '</h4><br><b>' . $foo['title'] . '</b><br><div style="margin-left: 20px;">' . $foo['description'] . '</div></td> <td></td> </tr> </tbody> </table>';
                                                             if($i < count($food)){
                                                                 echo '<div style="padding-bottom: 20px; padding-top: 20px;"></div>';
                                                             }
@@ -205,7 +210,7 @@
                                             }
 
                                             
-                                            echo '<input style="float:right" class="btn btn-primary" type="submit" value="Bestellung absenden">';
+                                            echo '<input style="float:right" class="btn btn-primary" type="submit" value="Bestellung absenden"></form>';
                                         }
                                         ?>
                                     
